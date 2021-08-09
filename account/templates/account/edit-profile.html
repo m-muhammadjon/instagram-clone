@@ -1,0 +1,138 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Profile | Vietgram</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'src/css/style.css' %}">
+    <style>
+        .message{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: #000;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        .message p{
+            margin-left: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+{% include 'account/navbar.html' %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<main id="edit-profile">
+    <div class="edit-profile__container">
+        <header class="edit-profile__header">
+            <div class="edit-profile__avatar-container">
+                {% if user.profile.photo %}
+                    <img class="edit-profile__avatar" src="{{ user.profile.photo.url }}"/>
+                {% else %}
+                    <img class="edit-profile__avatar" src="{% static 'src/img/default_profile.png' %}" alt="">
+                {% endif %}
+            </div>
+            <h4 class="edit-profile__username">{{ request.user.username }}</h4>
+        </header>
+        <form action="" class="edit-profile__form" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="form__row">
+                <label for="full-name" class="form__label">Change Profile Photo</label>
+                {#                <input id="full-name" type="text" class="form__input"/>#}
+                <div>{{ profile_form.photo }}</div>
+            </div>
+            <div class="form__row">
+                <label for="full-name" class="form__label">First Name:</label>
+                {#                <input id="full-name" type="text" class="form__input"/>#}
+                {% render_field user_form.first_name class="form__input" %}
+            </div>
+            <div class="form__row">
+                <label for="full-name" class="form__label">Last Name:</label>
+                {#                <input id="full-name" type="text" class="form__input"/>#}
+                {% render_field user_form.last_name class="form__input" %}
+            </div>
+            <div class="form__row">
+                <label for="user-name" class="form__label">Username:</label>
+                {#                <input id="user-name" type="text" class="form__input"/>#}
+                {% render_field user_form.username class="form__input" %}
+            </div>
+            <div class="form__row">
+                <label for="website" class="form__label">Website:</label>
+                {#                <input id="website" type="url" class="form__input"/>#}
+                {% render_field profile_form.website class="form__input" type="text" %}
+            </div>
+            <div class="form__row">
+                <label for="bio" class="form__label">Bio:</label>
+                {#                <textarea id="bio"></textarea>#}
+                {% render_field profile_form.bio class="form__input" rows="3" %}
+            </div>
+            <div class="form__row">
+                <label for="email" class="form__label">Email:</label>
+                {#                <input id="email" type="email" class="form__input"/>#}
+                {% render_field user_form.email class="form__input" %}
+            </div>
+            <div class="form__row">
+                <label for="phone" class="form__label">Phone Number:</label>
+                {#                <input id="phone" type="tel" class="form__input"/>#}
+                {% render_field profile_form.phone_number class="form__input" %}
+            </div>
+            <div class="form__row">
+                <label for="gender" class="form__label">Gender:</label>
+                {#                <select id="gender">#}
+                {#                    <option value="male">Male</option>#}
+                {#                    <option value="female">Female</option>#}
+                {#                    <option value="cant">Can't remember</option>#}
+                {#                </select>#}
+                {{ profile_form.gender }}
+            </div>
+            <input style="cursor: pointer" type="submit" value="Submit">
+        </form>
+    </div>
+</main>
+<footer class="footer">
+    <div class="footer__column">
+        <nav class="footer__nav">
+            <ul class="footer__list">
+                <li class="footer__list-item"><a href="#" class="footer__link">About Us</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Support</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Blog</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Press</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Api</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Jobs</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Privacy</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Terms</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Directory</a></li>
+                <li class="footer__list-item"><a href="#" class="footer__link">Language</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="footer__column">
+        <span class="footer__copyright">© 2021 Instagram from Facebook</span>
+    </div>
+</footer>
+{% if messages %}
+<div class="message">
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+<script src="{% static 'src/js/script.js' %}"></script>
+
+</body>
+
+</html>

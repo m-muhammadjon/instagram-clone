@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
+    <link rel="stylesheet" href="{% static 'src/css/style.css' %}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- link slick -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <style>
+        .message {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: #000;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .message p {
+            margin-left: 10px;
+        }
+
+        .post * {
+            width: 100%;
+            height: auto;
+        }
+
+        .fas, .far {
+            font-size: 35px;
+        }
+
+        .fa-bookmark {
+            color: #333333;
+        }
+
+        .minus {
+            color: #ED4956;
+        }
+
+        .plus {
+            color: #333333;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+{% include 'account/navbar.html' %}
+<div class="content">
+    <div class="content-left">
+        <!-- stories -->
+        <div class="multiple-items">
+                <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+            <span class="wrap-img">
+                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                    <p>muhammadjon</p>
+                </span>
+        </div>
+        <div id="posts">
+            {% include 'account/list-ajax-home.html' %}
+        </div>
+    </div>
+
+    <div class="content-right">
+        {% if request.user.is_authenticated %}
+            <div class="d-flex align-items-center">
+                {% if request.user.profile.photo %}
+                    <img src="{{ request.user.profile.photo.url }}" class="img-circle">
+                {% else %}
+                    <img src="{% static 'src/img/default_profile.png' %}" alt="" class="img-circle">
+                {% endif %}
+                <div>
+                    <h3><a href="{% url 'profile' request.user.username %}"
+                           style="text-decoration: none; color: #000">{{ request.user.username }}</a></h3>
+                    <h3 class="tx-grey f-w-500">{{ request.user.get_full_name }}</h3>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="d-flex align-items-center justify-content-between" style="margin-top: 15px; margin-bottom: 15px;">
+            <h3 class="tx-grey">Suggestions For You</h3>
+            <h4 class="tx-grey"><a href="{% url 'suggested' %}" class="text-dark" style="text-decoration: none;">See
+                All</a></h4>
+        </div>
+        {% for user in  suggestions %}
+            <div class="d-flex align-items-center justify-content-between" style="margin: 5px 0;">
+                <div class="d-flex align-items-center">
+                    {% if user.profile.photo %}
+                        <img src="{{ user.profile.photo.url }}" class="img-circle2"/>
+                    {% else %}
+                        <img src="{% static 'src/img/default_profile.png' %}" class="img-circle2" alt="">
+                    {% endif %}
+                    <div>
+                        <h3><a href="{% url 'profile' user.username %}" style="text-decoration: none"
+                               class="text-dark">{{ user.username }}</a></h3>
+                        <h3 class="tx-grey f-w-500">Top user</h3>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+
+
+        <!-- left footer -->
+        <div class="align-items-center" style="margin-top: 20px;">
+            <h5 class="f-w-500">
+                About &bull; Help &bull; Press &bull; API &bull; Jobs &bull; Privacy &bull; Terms &bull; Locations
+                &bull;
+            </h5>
+            <h5 class="f-w-500">
+                Top &bull; Accounts &bull; Hashtags &bull; Language &bull; English
+            </h5>
+            <h5 class="f-w-500" style="margin-top: 20px;">
+                &copy; 2021 INSTAGRAM FROM FACEBOOK
+            </h5>
+        </div>
+    </div>
+</div>
+
+
+{% if messages %}
+    <div class="message">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+<script>
+    $('.multiple-items').slick({
+        infinite: false,
+        slidesToShow: 6,
+        slidesToScroll: 3
+    });
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    $(document).ready(function () {
+        var page = 1;
+        var empty_page = false;
+        var block_request = false;
+        $('body').scroll(function () {
+            var margin = $(document).height() - $(window).height() - 200;
+            // console.log($('body').scrollTop() + ' >  ' + margin)
+            if ($('body').scrollTop() > margin && !empty_page && !block_request) {
+                block_request = true;
+                page += 1;
+                $.get('?page=' + page, function (data) {
+                    if (data == '') {
+                        empty_page = true;
+                    } else {
+                        block_request = false;
+                        $('#posts').append(data)
+                    }
+                })
+            }
+        })
+
+
+        // like button
+        $('#posts').on('click', 'a.like', function (e){
+            console.log('click');
+            e.preventDefault();
+            var a_like = '#' + $(this).data('id') + ' a.like';
+            var like_count = '#' + $(this).data('id') + ' .count-likes span';
+            $.post('{% url "post:post_like" %}',
+                {
+                    id: $(this).data('id'),
+                    action: $(this).data('action')
+                },
+                function (data) {
+                    if (data['status'] == 'ok') {
+                        var previous_action = $(a_like).data('action');
+                        // toggle data-action
+                        $(a_like).data('action', previous_action == 'like' ? 'unlike' : 'like');
+                        // toggle like button icon
+                        $(a_like).html(previous_action == 'like' ? '<i class="fas fa-heart minus"></i>' : '<i class="far fa-heart plus"></i>');
+                        // update total likes
+                        var previous_likes = parseInt($(like_count).text());
+                        $(like_count).text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1)
+                    }
+                })
+        })
+        // saved button
+        $('#posts').on('click', 'a.save', function (e){
+            e.preventDefault();
+            var a_save = '#' + $(this).data('id') + ' a.save';
+            $.post('{% url "post_save" %}',
+                {
+                    id: $(this).data('id'),
+                    action: $(this).data('action')
+                },
+                function (data) {
+                    if (data['status'] == 'ok') {
+                        var previous_action = $(a_save).data('action');
+                        // toggle data action
+                        $(a_save).data('action', previous_action == 'save' ? 'unsave' : 'save');
+                        // change saved icon
+                        $(a_save).html(previous_action == 'save' ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>');
+                    }
+                })
+        })
+    })
+
+
+</script>
+<script src="{% static 'src/js/script.js' %}"></script>
+</body>
+</html>

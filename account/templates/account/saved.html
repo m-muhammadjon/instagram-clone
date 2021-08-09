@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{{ user.get_full_name }} @{{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'src/profile/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'src/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        a {
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .follows {
+            width: 400px;
+            height: 400px;
+            background: #fff;
+            border: 1px solid #000;
+            border-radius: 20px;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+            display: none;
+        }
+
+        .showfollows {
+            display: block;
+        }
+
+        .follows .t {
+            width: 100%;
+            height: 42px;
+            border-bottom: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .follows .t p:last-child {
+            font-size: 50px;
+        }
+
+        .follows .users {
+            height: 335px;
+            overflow-y: scroll;
+        }
+
+        .follows .users .odam {
+            margin: 5px;
+        }
+
+        .odam a {
+            color: black;
+        }
+
+        .follows .users .odam img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+{% include 'account/navbar.html' %}
+<nav>
+    <div class="fixed">
+
+    </div>
+    <div class="mock"></div>
+</nav>
+<main>
+    <header>
+        {% include 'account/info.html' %}
+        <div class="profile-info mobile-only">
+            <div class="description row">
+                <h1>{{ user.get_full_name }}</h1>
+                <span>
+              {{ user.profile.bio }}
+              <br/>
+              <a href="{{ user.profile.website }}">{{ user.profile.website_name }}</a>
+            </span>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="desktop-only">
+        <div class="tabs">
+            <div class="tab-item ">
+                <a href="{% url 'profile' user.username %}">
+                    <svg aria-label="" class="_8-yf5 " fill="#8e8e8e" height="12" role="img" viewBox="0 0 48 48"
+                         width="12">
+                        <path clip-rule="evenodd"
+                              d="M45 1.5H3c-.8 0-1.5.7-1.5 1.5v42c0 .8.7 1.5 1.5 1.5h42c.8 0 1.5-.7 1.5-1.5V3c0-.8-.7-1.5-1.5-1.5zm-40.5 3h11v11h-11v-11zm0 14h11v11h-11v-11zm11 25h-11v-11h11v11zm14 0h-11v-11h11v11zm0-14h-11v-11h11v11zm0-14h-11v-11h11v11zm14 28h-11v-11h11v11zm0-14h-11v-11h11v11zm0-14h-11v-11h11v11z"
+                              fill-rule="evenodd"></path>
+                    </svg>
+                    <span>POSTS</span>
+                </a>
+            </div>
+            <div class="tab-item last active">
+                <svg aria-label="" class="_8-yf5 " fill="#262626" height="12" role="img" viewBox="0 0 48 48"
+                     width="12">
+                    <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z"></path>
+                </svg>
+                <span>Saved</span>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-tabs mobile-only">
+        <ul>
+            <li>
+                <div>{{ user.profile.posts.count }}</div>
+                posts
+            </li>
+            <li>
+                <div>{{ user.followers.count }}</div>
+                follower{{ user.followers.count|pluralize }}
+            </li>
+            <li>
+                <div>{{ user.profile.follows.count }}</div>
+                following
+            </li>
+        </ul>
+        <div class="actions">
+            <a href="{% url 'profile' user.username %}" style="text-decoration: none;">
+                <svg aria-label="" class="_8-yf5 " fill="#8e8e8e" height="12" role="img" viewBox="0 0 48 48" width="12">
+                    <path clip-rule="evenodd"
+                          d="M45 1.5H3c-.8 0-1.5.7-1.5 1.5v42c0 .8.7 1.5 1.5 1.5h42c.8 0 1.5-.7 1.5-1.5V3c0-.8-.7-1.5-1.5-1.5zm-40.5 3h11v11h-11v-11zm0 14h11v11h-11v-11zm11 25h-11v-11h11v11zm14 0h-11v-11h11v11zm0-14h-11v-11h11v11zm0-14h-11v-11h11v11zm14 28h-11v-11h11v11zm0-14h-11v-11h11v11zm0-14h-11v-11h11v11z"
+                          fill-rule="evenodd"></path>
+                </svg>
+            </a>
+                <i class="fas fa-bookmark"></i>
+        </div>
+    </div>
+
+
+    <section class="profile__photos" style="display: flex; flex-wrap: wrap; justify-content: space-between">
+        {% for post in saved %}
+            <div class="profile__photo">
+                {% if post.type == 'image' %}
+                    <img src="{{ post.post.url }}">
+                {% else %}
+                    <video width="278" height="280" controls>
+                        <source src="{{ post.post.url }}" type="video/mp4">
+                    </video>
+                {% endif %}
+                <div class="profile__photo-overlay">
+                    <div>
+                    <span class="overlay__item">
+                        <i class="fa fa-heart"></i>
+                        {{ post.likes.count }}
+                    </span>
+                        <span class="overlay__item">
+                        <i class="fa fa-comment"></i>
+                        {{ post.comments.count }}
+                    </span>
+                    </div>
+                    <a href="{% url 'post:post_detail' post.id %}">Go to post</a>
+                </div>
+            </div>
+        {% empty %}
+        {% endfor %}
+    </section>
+</main>
+<script src="{% static 'src/js/script.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
+<script>
+    //click follows btn
+    var knopka = document.getElementById("li-follows");
+    var d = document.getElementById("follows");
+    var close = document.getElementById("yopish")
+
+    function showfollow() {
+        var element = document.getElementById("follows");
+        element.classList.toggle("showfollows");
+    }
+
+    function showfollower() {
+        var element = document.getElementById("followers");
+        element.classList.toggle("showfollows");
+    }
+
+    function Yopish() {
+        var element = document.getElementById("follows");
+        element.classList.toggle("yop");
+    }
+
+
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    $(document).ready(function () {
+        $('a.follow').click(function (e) {
+            e.preventDefault();
+            $.post('{% url "user_follow" %}',
+                {
+                    id: $(this).data('id'),
+                    action: $(this).data('action')
+                },
+                function (data) {
+                    if (data['status'] == 'ok') {
+                        var previous_action = $('a.follow').data('action');
+                        // toggle data-action
+                        $('a.follow').data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+                        // toggle link text
+                        $('a.follow').text(previous_action == 'follow' ? 'Unfollow' : 'Follow');
+                        // update total followers
+                        var previous_followers = parseInt($('li span#count').text());
+                        $('li span#count').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+                        // toggle background color follow button
+                        $('a.follow').attr("class", previous_action == 'follow' ? "follow btn btn-danger" : "follow btn btn-primary");
+                    }
+                })
+        })
+    });
+</script>
+</body>
+</html>

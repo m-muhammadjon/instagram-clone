@@ -1,0 +1,117 @@
+{% load static %}
+<div class="header-grid">
+    <div class="profile-pic">
+        {% if user.profile.photo %}
+            <img src="{{ user.profile.photo.url }}"/>
+        {% else %}
+            <img src="{% static 'src/img/default_profile.png' %}" alt="">
+        {% endif %}
+    </div>
+    <div class="profile-info">
+        {% with total_followers=user.followers.count total_follows=user.profile.follows.count follows=user.profile.follows.all %}
+            <div class="title row">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center">
+                    <h2>{{ user.username }}</h2>
+                    {% if request.user == user %}
+                        <a class="btn text-dark border-secondary" style="width: 120px"
+                           href="{% url 'edit_profile' %}">Edit Profile</a>
+                        <a class="btn text-dark border-secondary" style="width: 120px"
+                           href="{% url 'password_change' %}">Change Password</a>
+
+                    {% endif %}
+                </div>
+                <span class="verified-icon"></span>
+                {% if request.user != user %}
+                    <a href="#" data-id="{{ user.id }}"
+                       data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+                       class=" follow btn {% if request.user in user.followers.all %}btn-danger{% else %} btn-primary{% endif %}"
+                       style="width: 80px; text-align: center">
+                        {% if request.user not in user.followers.all %}
+                            Follow
+                        {% else %}
+                            Unfollow
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+            <div class="desktop-only">
+            <div class="details row">
+                <ul>
+                    <li><span>{{ user.posts.count }}</span> post{{ user.posts.count|pluralize }}</li>
+                    <li style="cursor: pointer" onclick="showfollower()"><span id="count">{{ total_followers }}</span>
+                        follower{{ total_followers|pluralize }}
+                        <div class="follows" id="followers">
+                            <div class="t">
+                                <p>&nbsp;</p>
+                                <h2>Followers</h2>
+                                <p id="yopish" style="cursor: pointer;" onclick="Yopish()">x</p>
+                            </div>
+                            <div class="users">
+                                {% for user in user.followers.all %}
+                                    <div class="odam">
+                                        {% if user.profile.photo %}
+                                            <img src="{{ user.profile.photo.url }}"/>
+                                        {% else %}
+                                            <img src="{% static 'src/img/default_profile.png' %}" alt="">
+                                        {% endif %}
+                                        <a href="{% url 'profile' user.username %}">{{ user.username }}</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                    <li id="li-follows" style="cursor: pointer" onclick="showfollow()">
+                        <span>{{ total_follows }}</span> following
+
+
+                        <div class="follows" id="follows">
+                            <div class="t">
+                                <p>&nbsp;</p>
+                                <h2>Following</h2>
+                                <p id="yopish" style="cursor: pointer;" onclick="Yopish()">x</p>
+                            </div>
+                            <div class="users">
+                                {% for user in follows %}
+                                    <div class="odam">
+                                        {% if user.profile.photo %}
+                                            <img src="{{ user.profile.photo.url }}"/>
+                                        {% else %}
+                                            <img src="{% static 'src/img/default_profile.png' %}" alt="">
+                                        {% endif %}
+                                        <a href="{% url 'profile' user.username %}">{{ user.username }}</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        {% endwith %}
+        <div class="description row last">
+            <h3>{{ user.get_full_name }}</h3>
+            <span>
+                {% if user.profile.bio %}
+                    {{ user.profile.bio }}
+                {% endif %}
+                <br/>
+                  <a href="{{ user.profile.website }}">{{ user.profile.website_name }}</a>
+                </span>
+        </div>
+        </div>
+        {% if request.user != user %}
+            {% if mutual %}
+                <br>
+                <span style="color: #8e8e8e;">Followed by</span>
+                {% for obj in mutual %}
+                    <a href="{% url 'profile' obj.username %}" class="text-dark">{{ obj }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </div>
+
+</div>
+<br>
+<br>
+

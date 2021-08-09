@@ -1,0 +1,24 @@
+{% for post in posts %}
+    <div class="profile__photo">
+        {% if post.type == 'image' %}
+            <img src="{{ post.post.url }}">
+        {% else %}
+            <video width="278" height="280" controls>
+                <source src="{{ post.post.url }}" type="video/mp4">
+            </video>
+        {% endif %}
+        <div class="profile__photo-overlay">
+            <div>
+                    <span class="overlay__item">
+                        <i class="fa fa-heart"></i>
+                        {{ post.likes.count }}
+                    </span>
+                <span class="overlay__item">
+                        <i class="fa fa-comment"></i>
+                        {{ post.comments.count }}
+                    </span>
+            </div>
+            <a href="{% url 'post:post_detail' post.id %}">Go to post</a>
+        </div>
+    </div>
+{% endfor %}

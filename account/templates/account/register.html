@@ -1,0 +1,79 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram</title>
+    <link rel="stylesheet" href="{% static 'src/login/css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'src/login/css/media-queries.css' %}" />
+    <link rel="icon" href="{% static 'src/login/assets/images/favicon.ico' %}" />
+  </head>
+  <body>
+    <main>
+      <div class="log-in-container">
+        <div class="log-in">
+          <!-- Logo -->
+          <img src="{% static 'src/login/assets/images/instagram-logo.png' %}" class="logo" />
+          <h2 style="color: #8e8e8e;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 20px;
+          margin-bottom: 20px;
+          text-align: center;
+          font-family: sans-serif">Sign up to see photos and videos from your friends.</h2>
+          <!-- Log in form -->
+          <form class="log-in-form" method="post">
+{#            <input type="text" placeholder="Phone number or email" />#}
+{#            <input type="text" placeholder="Full name" />#}
+{#            <input type="text" placeholder="username" />#}
+{#            <input type="password" placeholder="Password" />#}
+              {% render_field form.email placeholder="Email" style="margin-bottom: 5px" %}
+              {% render_field form.first_name placeholder="First name" %}
+              {% render_field form.last_name placeholder="Last name" %}
+              {% render_field form.username placeholder="username" %}
+              {% render_field form.password placeholder="Password" %}
+              {% csrf_token %}
+            <button class="log-in-button" type="submit">Sign up</button>
+          </form>
+
+
+        </div>
+        <!-- Sign up -->
+        <div class="sign-up">
+          <span>Have an account? </span><a href="{% url 'login' %}">Log in</a>
+        </div>
+        <!-- Download app -->
+        <div class="get-the-app">
+          <span>Get the app</span>
+          <div class="app-images">
+            <a href="#"><img src="{% static 'src/login/assets/images/applestore.png' %}" /></a>
+            <a href="#"><img src="{% static 'src/login/assets/images/googlestore.png' %}" /></a>
+          </div>
+        </div>
+      </div>
+      <!-- Phones -->
+      <div class="phones-container">
+        <img src="{% static 'src/login/assets/images/phones.png' %}" />
+      </div>
+    </main>
+    <footer>
+      <ul class="footer-links">
+        <li><a href="#">ABOUT</a></li>
+        <li><a href="#">HELP</a></li>
+        <li><a href="#">PRESS</a></li>
+        <li><a href="#">API</a></li>
+        <li><a href="#">JOBS</a></li>
+        <li><a href="#">PRIVACY</a></li>
+        <li><a href="#">TERMS</a></li>
+        <li><a href="#">LOCATIONS</a></li>
+        <li><a href="#">TOP</a></li>
+        <li><a href="#">ACCOUNTS</a></li>
+        <li><a href="#">HASHTAGS</a></li>
+        <li><a href="#">LANGUAGE</a></li>
+      </ul>
+      <span class="copyright">&copy; 2020 INSTAGRAM FROM FACEBOOK</span>
+    </footer>
+  </body>
+</html>

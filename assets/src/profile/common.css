@@ -1,0 +1,77 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+main {
+  /* background: yellow; */
+  max-width: 935px;
+  margin: 0 auto;
+  padding: 30px 20px 0px 20px;
+}
+@media only screen and (max-width: 735px) {
+  main {
+    padding: 0;
+  }
+}
+.search-icon {
+  background-image: url("/images/icons.png");
+  background-size: 440px 411px;
+  background-position: -428px -241px;
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+.arrow-right-icon {
+  background-image: url("/images/icons.png");
+  background-size: 440px 411px;
+  background-position: -402px -207px;
+  width: 24px;
+  height: 24px;
+  transform: rotate(180deg);
+}
+.media-icon {
+  background-image: url("/images/icons-2.png");
+  background-size: 65px 65px;
+  background-position: 0 0;
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+button {
+  all: unset;
+  font-weight: 600;
+  font-size: 14px;
+  color: #0095f6;
+  line-height: 18px;
+  padding: 5px 9px;
+  border-radius: 4px;
+}
+button.primary {
+  background: #0095f6;
+  color: white;
+  -webkit-text-fill-color: white;
+}
+.verified-icon {
+  background-image: url("/images/icons.png");
+  background-position: -194px -351px;
+  background-size: 440px 411px;
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Utils */
+.mobile-only {
+  display: none;
+}
+@media only screen and (max-width: 735px) {
+  .mobile-only {
+    display: block;
+  }
+}
+@media only screen and (max-width: 735px) {
+  .desktop-only {
+    display: none;
+  }
+}

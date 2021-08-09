@@ -1,0 +1,351 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.user.get_full_name }} on Instagram</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'src/profile/style.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="{% static 'src/css/style.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            background: #FAFAFA;
+        }
+
+        .post {
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 935px;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #DBDBDB;
+            border-radius: 5px;
+        }
+
+        .post .post-left {
+            width: 600px;
+            height: 600px;
+            border-right: 1px solid #EFEFEF;
+        }
+
+        .post .post-left * {
+            width: 100%;
+            height: 100%;
+        }
+
+        .post .post-right {
+            width: 335px;
+            height: 600px;
+        }
+
+        .post .post-right .user {
+            width: 335px;
+            height: 70px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #EFEFEF;
+        }
+
+        .post .post-right img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .post .post-right .caption {
+            width: 335px;
+            height: 372px;
+            padding: 10px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #EFEFEF;
+        }
+
+        .caption * {
+            font-size: 14px;
+        }
+
+        .users a {
+            display: inline-block;
+        }
+
+        .post .post-right .caption .users {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .likes-count {
+            margin: 10px;
+        }
+
+        .fas, .far {
+            font-size: 35px;
+        }
+
+        .fa-bookmark {
+            color: #333333;
+        }
+
+        .minus {
+            color: #ED4956;
+        }
+
+        .plus {
+            color: #333333;
+        }
+
+        .form {
+            width: 335px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form textarea {
+            font-size: inherit;
+            height: 40px;
+            max-height: 80px;
+            outline: 0;
+            padding: 0;
+            resize: none;
+            width: 200px;
+            display: flex;
+            align-items: center;
+            line-height: 35px;
+            border: none;
+        }
+
+        .form input {
+            margin-left: 30px;
+        }
+
+    </style>
+
+</head>
+<body>
+{% include 'account/navbar.html' %}
+
+<div class="post">
+    <div class="post-left">
+        {% if post.type == 'image' %}
+            <img src="{{ post.post.url }}">
+        {% else %}
+            <video width="278" height="280" controls>
+                <source src="{{ post.post.url }}" type="video/mp4">
+            </video>
+        {% endif %}
+    </div>
+    <div class="post-right">
+        <div class="user">
+            {% if post.user.profile.photo %}
+                <img src="{{ post.user.profile.photo.url }}" width="40" height="40" alt="">
+            {% else %}
+                <img src="{% static 'src/img/default_profile.png' %}" width="40" height="40" alt="">
+            {% endif %}
+            <a href="{% url 'profile' post.user.username %}" class="text-dark">{{ post.user.username }}</a>
+        </div>
+        <div class="caption">
+            <div class="users" id="caption">
+                <div class="user-img">
+                    {% if post.user.profile.photo %}
+                        <img src="{{ post.user.profile.photo.url }}" width="40" height="40" alt="">
+                    {% else %}
+                        <img src="{% static 'src/img/default_profile.png' %}" width="40" height="40" alt="">
+                    {% endif %}
+                </div>
+                <span>
+                <a href="{% url 'profile' post.user.username %}" class="text-dark"
+                   style="font-weight: 600">{{ post.user.username }}</a>
+                &nbsp;
+                {{ post.caption|linebreaks }}
+                <br>
+                    {% for tag in post.tags.all %}
+                        <a href="#">#{{ tag }}</a>&nbsp;
+                    {% endfor %}
+                </span>
+            </div>
+            <span id="add"></span>
+            <!-- comments -->
+            {% for comment in comments %}
+                <div class="users comments">
+                    <div class="user-img">
+                        {% if comment.user.profile.photo %}
+                            <img src="{{ comment.user.profile.photo.url }}" width="40" height="40" alt="">
+                        {% else %}
+                            <img src="{% static 'src/img/default_profile.png' %}" width="40" height="40" alt="">
+                        {% endif %}
+                    </div>
+                    <span>
+                <a href="{% url 'profile' comment.user.username %}" class="text-dark"
+                   style="font-weight: 600">{{ comment.user.username }}</a>
+                &nbsp;
+                {{ comment.body|linebreaks }}
+                        <span style="font-size: 10px; color: rgba(36,35,35,0.32)">{{ comment.created }}</span>
+                </span>
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="item-akun-bottom" style="padding: 0 5px">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="#" class="like" data-id="{{ post.id }}"
+                       data-action="{% if request.user in post.likes.all %}un{% endif %}like">
+                        {% if not request.user in post.likes.all %}
+                            <i class="far fa-heart plus"></i>
+                        {% else %}
+                            <i class="fas fa-heart minus"></i>
+                        {% endif %}
+                    </a>
+                    <img src="/static/src/img/7.png" alt="">
+                </div>
+                <div>
+                    <a href="#" class="save" data-id="{{ post.id }}"
+                       data-action="{% if post in request.user.profile.saved.all %}un{% endif %}save">
+                        {% if not post in request.user.profile.saved.all %}
+                            <i class="far fa-bookmark"></i>
+                        {% else %}
+                            <i class="fas fa-bookmark"></i>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="likes-count">
+            {% with total_likes=post.likes.count %}
+                <span class="count">{{ total_likes }}</span> like{{ total_likes|pluralize }}
+            {% endwith %}
+        </div>
+        <div style="border-bottom: 1px solid #EFEFEF; padding-bottom: 15px">
+            {{ post.created }}
+        </div>
+        <form action="" method="post" class="form"> {% csrf_token %}
+            {% render_field form.body placeholder="Add a comment..." id="body" %}
+            <input type="button" id="post" value="Post" data-id="{{ post.id }}"
+                   style="color: #0095f6; border: none; background: transparent; ">
+        </form>
+
+    </div>
+</div>
+
+<script src="{% static 'src/js/script.js' %}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
+<script>
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    $(document).ready(function () {
+        //like button
+        $('a.like').click(function (e) {
+            e.preventDefault();
+            $.post('{% url "post:post_like" %}',
+                {
+                    id: $(this).data('id'),
+                    action: $(this).data('action')
+                },
+                function (data) {
+                    if (data['status'] == 'ok') {
+                        var previous_action = $('a.like').data('action');
+                        // toggle data action
+                        $('a.like').data('action', previous_action == 'like' ? 'unlike' : 'like');
+                        // toggle like button icon
+                        $('a.like').html(previous_action == 'like' ? '<i class="fas fa-heart minus"></i>' : '<i class="far fa-heart plus"></i>')
+                        // update total likes
+                        var previous_likes = parseInt($('.count').text());
+                        $('.count').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+                    }
+                })
+        });
+        //saved button
+        $('a.save').click(function (e) {
+            e.preventDefault();
+            $.post('{% url "post_save" %}',
+                {
+                    id: $(this).data('id'),
+                    action: $(this).data('action')
+                },
+                function (data) {
+                    if (data['status'] == 'ok') {
+                        var previos_action = $('a.save').data('action');
+                        // toggle data action
+                        $('a.save').data('action', previos_action == 'save' ? 'unsave' : 'save');
+                        // change saved icon
+                        $('a.save').html(previos_action == 'save' ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>')
+                    }
+                })
+        })
+
+        // comment create
+        $('#post').click(function (e) {
+            e.preventDefault();
+            $.post('{% url "post:comment" %}',
+                {
+                    id: $(this).data('id'),
+                    body: $('#body').val()
+                },
+                function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log('oxshadi')
+                        var _html = '<div class="users comments">\
+                            <div class="user-img"> '
+                        {% if request.user.profile.photo %}
+                            + '<img src="{{ request.user.profile.photo.url }}" width="40" height="40" alt="">'
+                        {% else %}
+                             + '<img src="{% static 'src/img/default_profile.png' %}" width="40" height="40" alt="">'
+                        {% endif %}
+                    + '</div>\
+                    <span>\
+                <a href="#" class="text-dark"\
+                   style="font-weight: 600">{{ request.user.username}}</a>\
+                &nbsp; <p>' +
+                $('#body').val()  +
+                        ' </p> <span style="font-size: 10px; color: rgba(36,35,35,0.32)">Now</span>\
+                </span>\
+                </div>';
+                        console.log($('.comments'));
+                        $('#add').prepend(_html);
+
+                        $('#body').val('');
+                    }
+                })
+        })
+
+    });
+</script>
+</body>
+</html>
