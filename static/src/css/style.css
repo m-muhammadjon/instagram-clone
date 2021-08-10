@@ -455,6 +455,54 @@ html, body {
     cursor: pointer;
 }
 
+#searchField {
+    position: relative;
+}
+
+#searched-users {
+    width: 360px;
+    height: 375px;
+    position: absolute;
+    margin-top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 7px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.095);
+}
+
+#searched-users .user {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    border-radius: 5px;
+}
+
+#searched-users .s_user_img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#searched-users .h3:first-child {
+    color: black;
+    font-weight: 500;
+}
+
+#searched-users .h3 {
+    font-size: 14px;
+}
+a{
+    text-decoration: none;
+}
+
+#searched-users a:hover {
+    background-color: #fafafa;
+}
+
 
 /* responsive */
 @media (max-width: 1024px) {

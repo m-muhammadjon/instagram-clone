@@ -147,7 +147,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
+}
+.profile__photo .profile__photo-overlay a{
+  color: #4ac1f7;
 }
 
 .profile__photo:hover .profile__photo-overlay {

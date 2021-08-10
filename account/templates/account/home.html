@@ -57,6 +57,7 @@
             text-decoration: none;
         }
 
+
     </style>
 </head>
 <body>
@@ -219,7 +220,7 @@
 
 
         // like button
-        $('#posts').on('click', 'a.like', function (e){
+        $('#posts').on('click', 'a.like', function (e) {
             console.log('click');
             e.preventDefault();
             var a_like = '#' + $(this).data('id') + ' a.like';
@@ -243,7 +244,7 @@
                 })
         })
         // saved button
-        $('#posts').on('click', 'a.save', function (e){
+        $('#posts').on('click', 'a.save', function (e) {
             e.preventDefault();
             var a_save = '#' + $(this).data('id') + ' a.save';
             $.post('{% url "post_save" %}',
@@ -262,9 +263,8 @@
                 })
         })
     })
-
-
 </script>
+<script src="{% static 'src/js/searchUsers.js' %}"></script>
 <script src="{% static 'src/js/script.js' %}"></script>
 </body>
 </html>

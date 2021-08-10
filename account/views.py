@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Count
+import json
 
 from .forms import LoginForm, UserRegistrationForm, UserEditionForm, ProfileEditionForm
 from common.decorators import ajax_required
@@ -64,6 +65,27 @@ def homepage(request):
         print('ajax request')
         return render(request, 'account/list-ajax-home.html', {'posts': posts})
     return render(request, 'account/home.html', {'suggestions': suggestions, 'posts': posts})
+
+
+def search_users(request):
+    if request.method == 'POST':
+        search_val = json.loads(request.body).get('searchText')
+        users = User.objects.filter(
+            username__istartswith=search_val, is_active=True) | User.objects.filter(
+            first_name__istartswith=search_val, is_active=True) | User.objects.filter(
+            last_name__istartswith=search_val, is_active=True)
+        users = users
+        data = users.values()
+        for i in data:
+            username = i.get('username')
+            photo = User.objects.get(username=username).profile.photo
+            if photo:
+                i['photo'] = photo.url
+                print(photo.url)
+
+            else:
+                i['photo'] = '/static/src/img/default_profile.png'
+        return JsonResponse(list(data), safe=False)
 
 
 def register(request):

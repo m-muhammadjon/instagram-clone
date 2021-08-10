@@ -89,13 +89,15 @@
             </div>
         {% endwith %}
         <div class="description row last">
-            <h3>{{ user.get_full_name }}</h3>
+            <h3 class="full_name">{{ user.get_full_name }}</h3>
             <span>
                 {% if user.profile.bio %}
-                    {{ user.profile.bio }}
+                    <span class="bio">{{ user.profile.bio }}</span>
                 {% endif %}
                 <br/>
-                  <a href="{{ user.profile.website }}">{{ user.profile.website_name }}</a>
+                {% if user.profile.website %}
+                    <a class="website" href="{{ user.profile.website }}">{{ user.profile.website_name }}</a>
+                {% endif %}
                 </span>
         </div>
         </div>

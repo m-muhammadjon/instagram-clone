@@ -1,5 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.views.decorators.csrf import csrf_exempt
 from. import views
 
 urlpatterns = [
@@ -13,6 +14,7 @@ urlpatterns = [
     path('explore/people/suggested/', views.suggested, name='suggested'),
     path('save/', views.post_save, name='post_save'),
     path('<str:username>/saved/', views.profile_saved, name='saved'),
+    path('search-users/', csrf_exempt(views.search_users), name='search_users'),
 
 
 ]

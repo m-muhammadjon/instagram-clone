@@ -90,6 +90,7 @@
                 <span>
               {{ user.profile.bio }}
               <br/>
+
               <a href="{{ user.profile.website }}">{{ user.profile.website_name }}</a>
             </span>
             </div>
@@ -138,7 +139,7 @@
         </ul>
         <div class="actions">
 
-               <i class="fas fa-th"></i>
+            <i class="fas fa-th"></i>
 
             <a href="{% url 'saved' user.username %}" style="text-decoration: none;">
                 <svg aria-label="" class="_8-yf5 " fill="#262626" height="12" role="img" viewBox="0 0 48 48" width="12">
@@ -241,5 +242,7 @@
         })
     });
 </script>
+<script src="{% static 'src/js/searchUsers.js' %}"></script>
+
 </body>
 </html>

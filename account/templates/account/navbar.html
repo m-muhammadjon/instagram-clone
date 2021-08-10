@@ -3,9 +3,13 @@
     <div class="navbar">
         <a href="{% url 'homepage' %}"><img src="{% static 'src/img/1.png' %}" alt="" class="brand"></a>
         <div class="wrap-input">
-            <input type="text" placeholder="Search">
+            <input type="text" id="searchField" placeholder="Search">
             <img src="{% static 'src/img/6.png' %}" alt="" class="icon-search">
+            <div id="searched-users">
+
+            </div>
         </div>
+
         <div class="nav-item">
             <a href="{% url 'homepage' %}">
                 <img src="{% static 'src/img/5.png' %}" alt="">

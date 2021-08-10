@@ -7,10 +7,11 @@
     <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
     <link rel="stylesheet" href="{% static 'src/css/style.css' %}"/>
     <style>
-        body{
+        body {
             background: #FAFAFA;
         }
-        .content{
+
+        .content {
             max-width: 600px;
             height: auto;
             margin: auto;
@@ -21,7 +22,8 @@
             padding: 8px 0;
 
         }
-        .content img{
+
+        .content img {
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -38,7 +40,8 @@
 <h2 align="center">Suggested</h2>
 <div class="content">
     {% for user in suggestions %}
-        <div class="d-flex align-items-center justify-content-between" style="margin: 5px 0;{% if not forloop.last %}border-bottom: 1px solid #8e8e8e; {% endif %}">
+        <div class="d-flex align-items-center justify-content-between"
+             style="margin: 5px 0;{% if not forloop.last %}border-bottom: 1px solid #8e8e8e; {% endif %}">
             <div class="d-flex align-items-center">
                 {% if user.profile.photo %}
                     <img src="{{ user.profile.photo.url }}" class="img-circle2"/>
@@ -54,5 +57,7 @@
     {% endfor %}
 </div>
 <script src="{% static 'src/js/script.js' %}"></script>
+<script src="{% static 'src/js/searchUsers.js' %}"></script>
+
 </body>
 </html>
