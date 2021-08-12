@@ -26,8 +26,8 @@ searchField.addEventListener('keyup', (e) => {
                             <a class="user text-dark" href="/accounts/profile/${user.username}/">
                                 <img src="${user.photo}" class="s_user_img" alt="">
                                 <div>
-                                    <h3>${user.username}</h3>
-                                    <h3 class="tx-grey f-w-500">${user.first_name} ${user.last_name}</h3>
+                                    <h3 class="h3">${user.username}</h3>
+                                    <h3 class="h3">${user.first_name} ${user.last_name}</h3>
                                 </div>
                             </a>
                         `

@@ -1,14 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Post Create</title>
+    <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
+    <link rel="stylesheet" href="{% static 'src/css/style.css' %}"/>
+    <style>
+        form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 450px;
+            height: 300px;
+            background: #fff;
+        }
+    </style>
 </head>
 <body>
+{% include 'account/navbar.html' %}
+<br>
+<br>
+<br>
+<br>
+<br>
 <form method="post" enctype="multipart/form-data">
     {{ form.as_p }}
     {% csrf_token %}
     <input type="submit">
 </form>
+
+<script src="{% static 'src/js/searchUsers.js' %}"></script>
+<script src="{% static 'src/js/script.js' %}"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@
         }
 
         .profile__photo img, .profile__photo video {
-            width: 262px;
+            width: 100%;
             height: 277px;
             object-fit: cover;
         }
@@ -73,7 +73,7 @@
                 block_request = true;
                 page += 1;
                 $.get('?page=' + page, function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data == '') {
                         empty_page = true;
                     } else {

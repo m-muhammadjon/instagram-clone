@@ -1,11 +1,38 @@
 {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<style>
+    .social {
+        position: absolute;
+        z-index: 999;
+        left: 50px;
+        background: rgba(13, 23, 26, 0.73);
+        width: 180px;
+        height: 40px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .social a i {
+        font-size: 25px;
+    }
+</style>
 <div class="header">
+    <div class="social">
+        <a href="https://github.com/m-muhammadjon" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.instagram.com/muhamedov.muhammadjon/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/m_muhammadjon" target="_blank"><i class="fab fa-telegram"></i></a>
+    </div>
+
     <div class="navbar">
         <a href="{% url 'homepage' %}"><img src="{% static 'src/img/1.png' %}" alt="" class="brand"></a>
         <div class="wrap-input">
             <input type="text" id="searchField" placeholder="Search">
             <img src="{% static 'src/img/6.png' %}" alt="" class="icon-search">
-            <div id="searched-users">
+            <div id="searched-users" style="overflow-y: scroll;">
 
             </div>
         </div>

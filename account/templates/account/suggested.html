@@ -40,20 +40,25 @@
 <h2 align="center">Suggested</h2>
 <div class="content">
     {% for user in suggestions %}
-        <div class="d-flex align-items-center justify-content-between"
-             style="margin: 5px 0;{% if not forloop.last %}border-bottom: 1px solid #8e8e8e; {% endif %}">
-            <div class="d-flex align-items-center">
-                {% if user.profile.photo %}
-                    <img src="{{ user.profile.photo.url }}" class="img-circle2"/>
-                {% else %}
-                    <img src="{% static 'src/img/default_profile.png' %}" class="img-circle2" alt="">
-                {% endif %}
-                <div>
-                    <h3><a href="{% url 'profile' user.username %}" style="text-decoration: none; margin-left: 10px;"
-                           class="text-dark">{{ user.username }}</a></h3>
+        <a href="{% url 'profile' user.username %}" style="text-decoration: none; margin-left: 10px;"
+           class="text-dark">
+            <div class="d-flex align-items-center justify-content-between"
+                 style="margin: 5px 0;{% if not forloop.last %}border-bottom: 1px solid #8e8e8e; {% endif %}">
+                <div class="d-flex align-items-center">
+                    {% if user.profile.photo %}
+                        <img src="{{ user.profile.photo.url }}" class="img-circle2"/>
+                    {% else %}
+                        <img src="{% static 'src/img/default_profile.png' %}" class="img-circle2" alt="">
+                    {% endif %}
+                    <div style="margin-left: 10px">
+                        <h2>{{ user.username }}</h2>
+                    </div>
+                <div style="color: black;position:absolute; right: 10px">
+                    <h3>{{ user.followers.count }} follower{{ user.followers.count|pluralize }}</h3>
+                </div>
                 </div>
             </div>
-        </div>
+        </a>
     {% endfor %}
 </div>
 <script src="{% static 'src/js/script.js' %}"></script>

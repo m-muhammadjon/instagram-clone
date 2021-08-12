@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ post.user.get_full_name }} on Instagram</title>
+    <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'src/profile/style.css' %}"/>
@@ -27,6 +29,14 @@
             background: #FAFAFA;
         }
 
+        #post[disabled="true"] {
+            color: #BCE3FD;
+        }
+
+        #post {
+            color: #0095f6;
+        }
+
         .post {
             background: #fff;
             position: absolute;
@@ -46,12 +56,17 @@
             width: 600px;
             height: 600px;
             border-right: 1px solid #EFEFEF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
         }
 
         .post .post-left * {
-            width: 100%;
-            height: 100%;
+            max-height: 590px;
+            max-width: 600px;
         }
+
 
         .post .post-right {
             width: 335px;
@@ -141,6 +156,11 @@
             margin-left: 30px;
         }
 
+        .comment-body p, .komment {
+            width: 220px;
+            word-wrap: break-word;
+        }
+
     </style>
 
 </head>
@@ -150,7 +170,7 @@
 <div class="post">
     <div class="post-left">
         {% if post.type == 'image' %}
-            <img src="{{ post.post.url }}">
+            <a href="{{ post.post.url }}"><img src="{{ post.post.url }}"></a>
         {% else %}
             <video width="278" height="280" controls>
                 <source src="{{ post.post.url }}" type="video/mp4">
@@ -201,7 +221,7 @@
                 <a href="{% url 'profile' comment.user.username %}" class="text-dark"
                    style="font-weight: 600">{{ comment.user.username }}</a>
                 &nbsp;
-                {{ comment.body|linebreaks }}
+                <span class="comment-body">{{ comment.body|linebreaks }}</span>
                         <span style="font-size: 10px; color: rgba(36,35,35,0.32)">{{ comment.created }}</span>
                 </span>
                 </div>
@@ -243,8 +263,8 @@
         </div>
         <form action="" method="post" class="form"> {% csrf_token %}
             {% render_field form.body placeholder="Add a comment..." id="body" %}
-            <input type="button" id="post" value="Post" data-id="{{ post.id }}"
-                   style="color: #0095f6; border: none; background: transparent; ">
+            <input type="submit" id="post" value="Post" data-id="{{ post.id }}"
+                   style="border: none; background: transparent; ">
         </form>
 
     </div>
@@ -269,6 +289,19 @@
             }
         }
     });
+
+    const post_btn = document.querySelector("#post");
+    const commentValue = document.querySelector("#body");
+    post_btn.setAttribute("disabled", "true");
+    commentValue.addEventListener('keyup', () => {
+        if (commentValue.value.length > 0) {
+            post_btn.removeAttribute("disabled");
+        } else {
+            post_btn.setAttribute("disabled", "true");
+        }
+    })
+
+
     $(document).ready(function () {
         //like button
         $('a.like').click(function (e) {
@@ -320,26 +353,24 @@
                 },
                 function (data) {
                     if (data['status'] == 'ok') {
-                        console.log('oxshadi')
+                        post_btn.setAttribute("disabled", "true");
                         var _html = '<div class="users comments">\
                             <div class="user-img"> '
-                        {% if request.user.profile.photo %}
-                            + '<img src="{{ request.user.profile.photo.url }}" width="40" height="40" alt="">'
-                        {% else %}
-                             + '<img src="{% static 'src/img/default_profile.png' %}" width="40" height="40" alt="">'
-                        {% endif %}
-                    + '</div>\
+                            {% if request.user.profile.photo %}
+                                + '<img src="{{ request.user.profile.photo.url }}" width="40" height="40" alt="">'
+                            {% else %}
+                                + '<img src="{% static 'src/img/default_profile.png' %}" width="40" height="40" alt="">'
+                            {% endif %}
+                            + '</div>\
                     <span>\
                 <a href="#" class="text-dark"\
                    style="font-weight: 600">{{ request.user.username}}</a>\
-                &nbsp; <p>' +
-                $('#body').val()  +
-                        ' </p> <span style="font-size: 10px; color: rgba(36,35,35,0.32)">Now</span>\
-                </span>\
-                </div>';
-                        console.log($('.comments'));
+                &nbsp; <p class="komment">' +
+                            $('#body').val() +
+                            ' </p> <span style="font-size: 10px; color: rgba(36,35,35,0.32)">Now</span>\
+                    </span>\
+                    </div>';
                         $('#add').prepend(_html);
-
                         $('#body').val('');
                     }
                 })

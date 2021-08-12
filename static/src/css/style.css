@@ -5,6 +5,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
+    background: #FAFAFA;
 }
 
 .header {
@@ -495,7 +496,7 @@ html, body {
 #searched-users .h3 {
     font-size: 14px;
 }
-a{
+#searched-users a{
     text-decoration: none;
 }
 
