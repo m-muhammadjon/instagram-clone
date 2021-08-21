@@ -57,106 +57,59 @@
             <div class="wrap-item-like">
                 <div class="wrap-like" id="wrap-like">
                     <div id="triangle-up-like"></div>
-                    <div class="menu-like">
-
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
+                    <div class="menu-like" style="cursor: auto">
+                        {% for action in actions %}
+                            {% with user=action.user target=action.target %}
+                                <div class="item-menu" style="display: flex; align-items: center">
+                                    <div style="display: flex; align-items: center;">
+                                        <div class="profile">
+                                            {% if user.profile.photo %}
+                                                <img src="{{ user.profile.photo.url }}" alt="">
+                                            {% else %}
+                                                <img src="{% static 'src/img/default_profile.png' %}">
+                                            {% endif %}
+                                        </div>
+                                        <span>
+                                        <span style="font-weight: bold;"><a
+                                                href="{% url 'profile' user.username %}"
+                                                class="text-dark" style="text-decoration: none">{{ user.username }}</a></span>
+                                        {{ action.verb }}
+                                            {% if action.target_ct.app_label == 'auth' and action.target_ct.model == 'user' %}
+                                                {% if action.target == request.user %}
+                                                    you.
+                                                {% else %}
+                                                    <a href="{% url 'profile' action.target %}"
+                                                       class="text-dark" style="text-decoration: none"><b>{{ action.target }}</b></a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if action.target_ct.app_label == 'post' %}
+                                                {% if action.verb == 'liked' or action.verb == 'commented' %}
+                                                    {% if  action.target_id in post_ids %}
+                                                        your post
+                                                    {% else %}
+                                                        post
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if target %}
+                                                {% if target.post %}
+                                                    <a href="{{ target.get_absolute_url }}">
+                                                    {% if target.type == 'image' %}
+                                                        <img src="{{ target.post.url }}" alt="">
+                                                    {% else %}
+                                                        <video height="35">
+                                                            <source src="{{ target.post.url }}" type="video/mp4">
+                                                        </video>
+                                                    {% endif %}
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            <span style="color: #bcbcbc; font-size: 13px;">{{ action.created|timesince }} ago</span>
                                     </span>
-                            </div>
-                        </div>
-
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
+                                    </div>
                                 </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
-
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="item-menu">
-                            <div style="display: flex; align-items: center;">
-                                <div class="profile">
-                                    <img src="{% static 'src/img/profile.jpg' %}" alt="">
-                                </div>
-                                <span>
-                                        <span style="font-weight: bold;">Alijon Valiyev</span>
-                                        started following you.
-                                        <span style="color: #bcbcbc">2 Jan</span>
-                                    </span>
-                            </div>
-                        </div>
+                            {% endwith %}
+                        {% endfor %}
 
 
                     </div>

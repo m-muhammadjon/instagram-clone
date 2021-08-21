@@ -1,68 +1,67 @@
 {% load static %}
+{% load thumbnail %}
 {% for post in posts %}
-            <div class="content-akun" id="{{ post.id }}">
-                <div class="d-flex align-items-center justify-content-between" style="padding: 3px 10px;">
-                    <div class="d-flex align-items-center">
-                        <div class="wrap-img">
-                            {% if post.user.profile.photo %}
-                                <img src="{{ post.user.profile.photo.url }}" alt="" class="img-circle3">
-                            {% else %}
-                                <img src="{% static 'src/img/default_profile.png' %}" alt="" class="img-circle3">
-                            {% endif %}
-                        </div>
-                        <h3><a href="{% url 'profile' post.user.username %}" style="text-decoration: none;"
-                               class="text-dark">{{ post.user.username }}</a></h3>
-                        <a style="margin-left: 200px" href="{% url 'post:post_detail' post.id %}">Go to post</a>
-                    </div>
-                </div>
-                <div class="post">
-                    {% if post.type == 'image' %}
-                        <img src="{{ post.post.url }}" alt="">
+    <div class="content-akun" id="{{ post.id }}">
+        <div class="d-flex align-items-center justify-content-between" style="padding: 3px 10px;">
+            <div class="d-flex align-items-center">
+                <div class="wrap-img">
+                    {% if post.user.profile.photo %}
+                        <img src="{% thumbnail post.user.profile.photo 40x40 %}" alt="" class="img-circle3">
                     {% else %}
-                        <video controls>
-                            <source src="{{ post.post.url }}" type="video/mp4">
-                        </video>
+                        <img src="{% static 'src/img/default_profile.png' %}" alt="" class="img-circle3">
                     {% endif %}
                 </div>
-
-                <div class="item-akun-bottom">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="like" data-id="{{ post.id }}"
-                               data-action="{% if request.user in post.likes.all %}un{% endif %}like">
-                                {% if not request.user in post.likes.all %}
-                                    <i class="far fa-heart plus"></i>
-                                {% else %}
-                                    <i class="fas fa-heart minus"></i>
-                                {% endif %}
-                            </a>
-                            <img src="{% static 'src/img/7.png' %}" alt="">
-                        </div>
-                        <a href="#" class="save" data-id="{{ post.id }}"
-                           data-action="{% if post in request.user.profile.saved.all %}un{% endif %}save">
-                            {% if not post in request.user.profile.saved.all %}
-                                <i class="far fa-bookmark"></i>
-                            {% else %}
-                                <i class="fas fa-bookmark"></i>
-                            {% endif %}
-                        </a>
-                    </div>
-                    <p class="count-likes">
-                        <span>{{ post.likes.count }}</span> like{{ post.likes.count|pluralize }}</p>
-                    <p style="font-weight: bold;"><a href="{% url 'profile' post.user.username %}"
-                                                     class="text-dark">{{ post.user.username }}</a> <span
-                            style="font-weight: normal;">{{ post.caption|truncatewords:30 }}</span></p>
-                    {% if post.comments.count != 0 %}
-                        <p><a style="color: #8e8e8e;"
-                                                      href="{% url 'post:post_detail' post.id %}">View
-                            all {{ post.comments.count }} comment{{ post.comments.count|pluralize }}</a></p>
-                    {% else %}
-                        <p><a style="color: #8e8e8e;" href="{% url 'post:post_detail' post.id %}">Be the first to
-                            comment on this post</a></p>
-                    {% endif %}
-                    <p>1 DAY AGO</p>
-                </div>
+                <h3><a href="{% url 'profile' post.user.username %}" style="text-decoration: none;"
+                       class="text-dark">{{ post.user.username }}</a></h3>
+                <a style="margin-left: 200px" href="{% url 'post:post_detail' post.id %}">Go to post</a>
             </div>
-        {% empty %}
-            Welcome to instagram
-        {% endfor %}
+        </div>
+        <div class="post">
+            {% if post.type == 'image' %}
+                <img src="{% thumbnail post.post 580x0 quality=75 %}" alt="">
+            {% else %}
+                <video controls>
+                    <source src="{{ post.post.url }}" type="video/mp4">
+                </video>
+            {% endif %}
+        </div>
+
+        <div class="item-akun-bottom">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="#" class="like" data-id="{{ post.id }}"
+                       data-action="{% if request.user in post.likes.all %}un{% endif %}like">
+                        {% if not request.user in post.likes.all %}
+                            <i class="far fa-heart plus"></i>
+                        {% else %}
+                            <i class="fas fa-heart minus"></i>
+                        {% endif %}
+                    </a>
+                    <img src="{% static 'src/img/7.png' %}" alt="">
+                </div>
+                <a href="#" class="save" data-id="{{ post.id }}"
+                   data-action="{% if post in request.user.profile.saved.all %}un{% endif %}save">
+                    {% if not post in request.user.profile.saved.all %}
+                        <i class="far fa-bookmark"></i>
+                    {% else %}
+                        <i class="fas fa-bookmark"></i>
+                    {% endif %}
+                </a>
+            </div>
+            <p class="count-likes">
+                <span>{{ post.likes.count }}</span> like{{ post.likes.count|pluralize }}</p>
+            <p style="font-weight: bold;"><a href="{% url 'profile' post.user.username %}"
+                                             class="text-dark">{{ post.user.username }}</a> <span
+                    style="font-weight: normal;">{{ post.caption|truncatewords:30 }}</span></p>
+            {% if post.comments.count != 0 %}
+                <p><a style="color: #8e8e8e;"
+                      href="{% url 'post:post_detail' post.id %}">View
+                    {{ post.comments.count }} comment{{ post.comments.count|pluralize }}</a></p>
+            {% else %}
+                <p><a style="color: #8e8e8e;" href="{% url 'post:post_detail' post.id %}">Be the first to
+                    comment on this post</a></p>
+            {% endif %}
+            <p style="text-transform: uppercase">{{ post.created|timesince }} AGO</p>
+        </div>
+    </div>
+{% endfor %}

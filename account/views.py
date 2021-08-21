@@ -12,11 +12,15 @@ import json
 
 from .forms import LoginForm, UserRegistrationForm, UserEditionForm, ProfileEditionForm
 from common.decorators import ajax_required
+from actions.utils import create_action
 from .models import Profile, Contact
+from actions.models import Action
 from post.models import Post
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('homepage')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -40,12 +44,17 @@ def user_login(request):
 def homepage(request):
     users = User.objects.all()
     follows = request.user.profile.follows.all()
+    following_ids = request.user.following.values_list('id', flat=True)
     for follow in follows:
         users = users.exclude(username=follow.username)
     users = users.exclude(username=request.user.username)
     suggestions = users.annotate(popularity=Count('followers')).order_by('-popularity')[:5]
-    posts = Post.objects.filter(user__in=request.user.profile.follows.all()).order_by('-created')
-    print(posts)
+    posts = Post.objects.all().order_by('-created')
+
+    if following_ids:
+        posts = posts.filter(user__in=request.user.following.all()).order_by('-created')
+        if not posts:
+            posts = Post.objects.all().order_by('-created')
     paginator = Paginator(posts, 8)
     page = request.GET.get('page')
     try:
@@ -101,6 +110,7 @@ def register(request):
             new_user.last_name = user_form.cleaned_data['last_name']
             new_user.save()
             Profile.objects.create(user=new_user)
+            create_action(new_user, 'has created an account')
             return redirect('login')
 
     else:
@@ -138,6 +148,7 @@ def user_follow(request):
                     user_to=user
                 )
                 req_user.follows.add(user)
+                create_action(request.user, 'started following', user)
             else:
                 Contact.objects.filter(user_from=request.user,
                                        user_to=user).delete()
@@ -208,6 +219,6 @@ def profile_saved(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
     if request.user != user:
         return redirect('homepage')
-    saved = user.profile.saved.all()
+    saved = user.profile.saved.all().order_by('-created')
 
     return render(request, 'account/saved.html', {'saved': saved, 'user': user})

@@ -26,6 +26,11 @@
             height: 277px;
             object-fit: cover;
         }
+        .tagged{
+            text-align: center;
+            font-size: 30px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -34,6 +39,11 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+{% if tag %}
+<h1 class="tagged">Posts tagged with "{{ tag }}"</h1>
+{% endif %}
 <br>
 <br>
 <br>

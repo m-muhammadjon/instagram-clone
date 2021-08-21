@@ -1,11 +1,16 @@
+{% load thumbnail %}
 {% for post in posts %}
-    <div class="profile__photo">
+    <div class="profile__photo" style="position:relative;">
         {% if post.type == 'image' %}
-            <img src="{{ post.post.url }}">
+            <img src="{% thumbnail post.post 299x277 quality=80 %}">
         {% else %}
-            <video width="278" height="280" controls>
+            <video width="278" height="280">
                 <source src="{{ post.post.url }}" type="video/mp4">
             </video>
+            {% if post.type == 'video' %}
+                        <i style="position: absolute; top: 15px; left: 15px; color: #fff; font-size: 20px"
+                           class="fas fa-play"></i>
+                    {% endif %}
         {% endif %}
         <div class="profile__photo-overlay">
             <div>

@@ -5,16 +5,19 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
+from taggit.models import Tag
 
-from .models import Post, Comment
-from .forms import PostCreationForm, CommentForm
+from .forms import PostCreationForm, CommentForm, PostEditionForm
 from common.decorators import ajax_required
+from actions.utils import create_action
+from .models import Post, Comment
 
 
 @login_required
 def post_create(request):
     if request.method == 'POST':
         form = PostCreationForm(data=request.POST, files=request.FILES)
+        # print('req')
         if form.is_valid():
             new_post = form.save(commit=False)
             new_post.user = request.user
@@ -24,6 +27,8 @@ def post_create(request):
                 new_post.type = 'video'
             new_post.save()
             form._save_m2m()
+            type_msg = 'photo' if new_post.type == 'image' else 'video'
+            create_action(request.user, f'posted {type_msg}', new_post)
             messages.success(request, 'Post created')
             return redirect('homepage')
     else:
@@ -54,14 +59,33 @@ def post_detail(request, id):
                                                 'form': comment_form})
 
 
+def edit(request, id):
+    post = get_object_or_404(Post, id=id)
+    if post.user != request.user:
+        return redirect('homepage')
+    else:
+        print('iya')
+        form = PostEditionForm(instance=post)
+        if request.method == 'POST':
+            print('post')
+            form = PostEditionForm(data=request.POST, files=request.FILES, instance=post)
+            if form.is_valid():
+                print('valid')
+                form.save()
+                return redirect(post.get_absolute_url())
+
+    return render(request, 'post_edit.html', {'form': form, 'post': post})
+
+
 @login_required
 @ajax_required
 @require_POST
 def create_comment(request):
-    print(request.POST)
+    # print(request.POST)
     post_id = request.POST.get('id')
     body = request.POST.get('body')
     comment = Comment.objects.create(body=body, post_id=post_id, user=request.user)
+    create_action(request.user, 'commented', Post.objects.get(id=post_id))
     return JsonResponse({'status': 'ok', 'date': comment.created})
 
 
@@ -71,12 +95,13 @@ def create_comment(request):
 def post_like(request):
     post_id = request.POST.get('id')
     action = request.POST.get('action')
-    print(request.POST)
+    # print(request.POST)
     if post_id and action:
         try:
             post = get_object_or_404(Post, id=post_id)
             if action == 'like':
                 post.likes.add(request.user)
+                create_action(request.user,  'liked', post)
             else:
                 post.likes.remove(request.user)
             print('req keldi')
@@ -88,8 +113,13 @@ def post_like(request):
 
 
 @login_required
-def explore(request):
+def explore(request, tag_slug=None):
     posts = Post.objects.all().order_by('-created')
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = Post.objects.filter(tags__in=[tag])
+
     paginator = Paginator(posts, 9)
     page = request.GET.get('page')
     try:
@@ -109,4 +139,4 @@ def explore(request):
         print('ajax request')
         return render(request, 'list-ajax.html', {'posts': posts})
 
-    return render(request, 'explore.html', {'posts': posts})
+    return render(request, 'explore.html', {'posts': posts, 'tag': tag})

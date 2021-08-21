@@ -1,5 +1,6 @@
 from taggit.managers import TaggableManager
 from django.conf import settings
+from django.urls import reverse
 from django.db import models
 import uuid
 import os
@@ -29,6 +30,9 @@ class Post(models.Model):
                                    blank=True)
     type = models.CharField(max_length=10, choices=CHOICES, null=True, default='image')
     tags = TaggableManager(blank=True)
+
+    def get_absolute_url(self):
+        return reverse("post:post_detail", args=[self.id])
 
 
 class Comment(models.Model):

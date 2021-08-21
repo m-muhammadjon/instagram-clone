@@ -72,9 +72,9 @@
             border-radius: 50%;
         }
 
-        .profile__photo img, .profile__photo video{
-            width: 100%;
-            height: 100%;
+        .profile__photo img, .profile__photo video {
+            width: 298px;
+            height: 298px;
             object-fit: cover;
         }
     </style>
@@ -107,7 +107,7 @@
     <div class="desktop-only">
         <div class="tabs">
             <div class="tab-item active">
-                            <i class="fas fa-th"></i>
+                <i class="fas fa-th"></i>
 
                 <span>POSTS</span>
             </div>
@@ -154,15 +154,20 @@
 
     <section class="profile__photos" style="display: flex; flex-wrap: wrap; justify-content: space-between">
         {% for post in posts %}
-            <div class="profile__photo">
+            <div class="profile__photo" style="position: relative">
                 {% if post.type == 'image' %}
                     <img src="{{ post.post.url }}">
                 {% else %}
-                    <video width="278" height="280" controls>
+                    <video width="278" height="280">
                         <source src="{{ post.post.url }}" type="video/mp4">
                     </video>
+                    {% if post.type == 'video' %}
+                        <i style="position: absolute; top: 15px; left: 15px; color: #fff; font-size: 20px"
+                           class="fas fa-play"></i>
+                    {% endif %}
                 {% endif %}
                 <div class="profile__photo-overlay">
+
                     <div>
                     <span class="overlay__item">
                         <i class="fa fa-heart"></i>

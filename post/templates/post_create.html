@@ -6,15 +6,76 @@
     <title>Post Create</title>
     <link rel="icon" href="/static/src/login/assets/images/favicon.ico">
     <link rel="stylesheet" href="{% static 'src/css/style.css' %}"/>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
+        * {
+            outline: none;
+        }
+
         form {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
-            width: 450px;
-            height: 300px;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             background: #fff;
+            padding: 20px;
+            width: 400px;
+        }
+
+        .file {
+            opacity: 0;
+            width: 0.1px;
+            height: 0.1px;
+            position: absolute;
+        }
+
+        label[for="id_post"] {
+            display: block;
+            position: relative;
+            width: 200px;
+            height: 50px;
+            border-radius: 25px;
+            background: linear-gradient(40deg, #ff6ec4, #7873f5);
+            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform .2s ease-out;
+        }
+
+        .file-name {
+            position: absolute;
+            bottom: -35px;
+            left: 10px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        input:hover + label,
+        input:focus + label {
+            transform: scale(1.02);
+        }
+label{
+    margin: 10px 0;
+}
+        input[type="submit"] {
+            margin-top: 10px;
+            background: #3897F0;
+            border: 0;
+            width: 100px;
+            height: 28px;
+            color: white;
+            font-weight: 600;
+            border-radius: 3px;
+            font-size: 14px;
+            padding: 7px 25px;
         }
     </style>
 </head>
@@ -25,12 +86,35 @@
 <br>
 <br>
 <br>
-<form method="post" enctype="multipart/form-data">
-    {{ form.as_p }}
+<form method="post" class="file-input" enctype="multipart/form-data">
+    <div style="margin-bottom: 25px;">
+        <input type="file" name="post" class="file" required="" id="id_post">
+        <label for="id_post">
+            Select file
+            <p class="file-name"></p>
+        </label>
+    </div>
+    {{ form.caption.label_tag }}
+    {{ form.caption }}
+    {{ form.tags.label_tag }}
+    {{ form.tags }}
     {% csrf_token %}
+    {{ form.errors }}
     <input type="submit">
 </form>
-
+<script>
+    const file = document.querySelector('#id_post');
+    file.addEventListener('change', (e) => {
+        // Get the selected file
+        const [file] = e.target.files;
+        // Get the file name and size
+        const {name: fileName, size} = file;
+        // Convert size in bytes to kilo bytes
+        const fileSize = (size / 1000).toFixed(2);
+        // Set the text content
+        const fileNameAndSize = `${fileName} - ${fileSize}KB`;
+        document.querySelector('.file-name').textContent = fileNameAndSize;
+    });</script>
 <script src="{% static 'src/js/searchUsers.js' %}"></script>
 <script src="{% static 'src/js/script.js' %}"></script>
 </body>
