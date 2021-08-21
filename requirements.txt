@@ -1,0 +1,13 @@
+asgiref @ file:///tmp/build/80754af9/asgiref_1625643473416/work
+certifi==2021.5.30
+Django @ file:///tmp/build/80754af9/django_1625585912945/work
+django-jazzmin==2.4.8
+django-taggit==1.5.1
+django-widget-tweaks==1.4.8
+easy-thumbnails==2.7
+Pillow==8.3.1
+psycopg2 @ file:///C:/ci/psycopg2_1612298766762/work
+pytz @ file:///tmp/build/80754af9/pytz_1612215392582/work
+sqlparse @ file:///tmp/build/80754af9/sqlparse_1602184451250/work
+typing-extensions @ file:///tmp/build/80754af9/typing_extensions_1624965014186/work
+wincertstore==0.2
