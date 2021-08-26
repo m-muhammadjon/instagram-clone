@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ti3q2k$%5i+6*yumfdxx6f&z$prnnkk&&##0)mt-0qfl+cw1%b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -79,6 +79,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': '*****',
+#         'USER': '*****',
+#         'PASSWORD': '****',
+#         'HOST': '*****',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -121,6 +131,7 @@ STATICFILES_DIRS = [
     join(BASE_DIR, 'static'),
 ]
 STATIC_ROOT = join(BASE_DIR, 'assets')
+# STATIC_ROOT = '/home/cloneinstagram/instagram-clone/static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = join(BASE_DIR, 'media/')

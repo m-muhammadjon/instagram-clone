@@ -78,6 +78,14 @@ def edit(request, id):
 
 
 @login_required
+def delete(request, id):
+    post = get_object_or_404(Post, id=id)
+    post.delete()
+    messages.success(request, 'Post deleted successfully')
+    return redirect('homepage')
+
+
+@login_required
 @ajax_required
 @require_POST
 def create_comment(request):

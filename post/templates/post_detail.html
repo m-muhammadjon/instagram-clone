@@ -1,5 +1,4 @@
 {% load static %}
-{% load thumbnail %}
 {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
@@ -172,7 +171,7 @@
     <div class="post-left">
         {% if post.type == 'image' %}
             <a href="{{ post.post.url }}">
-                <img src="{% thumbnail post.post 590x0 quality=75 %}">
+                <img src="{{ post.post.url }}">
             </a>
         {% else %}
             <video controls>
@@ -194,7 +193,7 @@
                 <a href="{% url 'post:edit_post' post.id %}" class="btn btn-sm text-dark border-secondary">Edit</a>
                 &nbsp;
                 &nbsp;
-                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                <a href="{% url 'post:delete' post.id %}" class="btn btn-sm btn-danger">Delete</a>
             {% endif %}
         </div>
         <div class="caption">

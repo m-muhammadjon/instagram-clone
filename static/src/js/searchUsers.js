@@ -18,7 +18,6 @@ searchField.addEventListener('keyup', (e) => {
             .then((data) => {
                 console.log("data", data);
                 if (data.length == 0) {
-                    console.log('iya');
                     usersTable.innerHTML += `<h1 class="noResults">No results 😞</h1>`
                 } else {
                     data.forEach(user => {

@@ -11,5 +11,6 @@ urlpatterns = [
     path('explore/', views.explore, name='explore'),
     path('tag/<str:tag_slug>/', views.explore, name='post_list_by_tag'),
     path('<int:id>/edit/', views.edit, name='edit_post'),
+    path('delete/<int:id>/', views.delete, name='delete'),
 
 ]

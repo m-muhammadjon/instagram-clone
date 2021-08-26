@@ -1,12 +1,11 @@
 {% load static %}
-{% load thumbnail %}
 {% for post in posts %}
     <div class="content-akun" id="{{ post.id }}">
         <div class="d-flex align-items-center justify-content-between" style="padding: 3px 10px;">
             <div class="d-flex align-items-center">
                 <div class="wrap-img">
                     {% if post.user.profile.photo %}
-                        <img src="{% thumbnail post.user.profile.photo 40x40 %}" alt="" class="img-circle3">
+                        <img src="{{ post.user.profile.photo.url }}" alt="" class="img-circle3">
                     {% else %}
                         <img src="{% static 'src/img/default_profile.png' %}" alt="" class="img-circle3">
                     {% endif %}
@@ -18,7 +17,7 @@
         </div>
         <div class="post">
             {% if post.type == 'image' %}
-                <img src="{% thumbnail post.post 580x0 quality=75 %}" alt="">
+                <img src="{{ post.post.url }}" alt="">
             {% else %}
                 <video controls>
                     <source src="{{ post.post.url }}" type="video/mp4">

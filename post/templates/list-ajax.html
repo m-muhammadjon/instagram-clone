@@ -1,8 +1,7 @@
-{% load thumbnail %}
 {% for post in posts %}
     <div class="profile__photo" style="position:relative;">
         {% if post.type == 'image' %}
-            <img src="{% thumbnail post.post 299x277 quality=80 %}">
+            <img src="{{ post.post.url }}">
         {% else %}
             <video width="278" height="280">
                 <source src="{{ post.post.url }}" type="video/mp4">
