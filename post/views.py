@@ -64,7 +64,7 @@ def edit(request, id):
     if post.user != request.user:
         return redirect('homepage')
     else:
-        print('iya')
+
         form = PostEditionForm(instance=post)
         if request.method == 'POST':
             print('post')
